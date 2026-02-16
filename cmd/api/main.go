@@ -2,22 +2,24 @@ package main
 
 import (
 	"log"
-	"net/http"
+
+	"github.com/abdul-burale/multi-tenant-order-management-api/internal/config"
+	"github.com/abdul-burale/multi-tenant-order-management-api/internal/server"
 )
 
 func main() {
-	mux := http.NewServeMux()
 
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok"))
-	})
-
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: mux,
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
 	}
+	/*
+		dbConn, err := db.NewPostGres(cfg.DBConn)
+		if err != nil {
+			log.Fatal(err)
+		}
+	*/
 
-	log.Println("Server listening on :8080")
-	log.Fatal(server.ListenAndServe())
+	srv := server.New(cfg)
+	server.Run(srv)
 }
