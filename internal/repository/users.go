@@ -9,9 +9,9 @@ import (
 )
 
 type UsersRespository interface {
-	Create(ctx context.Context, user *models.Users) error
-	GetByID(ctx context.Context, id uuid.UUID) (*models.Users, error)
-	GetByEmail(ctx context.Context, email string) (*models.Users, error)
+	Create(ctx context.Context, user *models.User) error
+	GetByID(ctx context.Context, id uuid.UUID) (*models.User, error)
+	GetByEmail(ctx context.Context, email string) (*models.User, error)
 }
 
 type PostgresUserRepository struct {
@@ -22,7 +22,7 @@ func (r *PostgresUserRepository) NewPostgresUserRespository(db *sql.DB) *Postgre
 	return &PostgresUserRepository{db: db}
 }
 
-func (r *PostgresUserRepository) Create(ctx context.Context, user *models.Users) error {
+func (r *PostgresUserRepository) Create(ctx context.Context, user *models.User) error {
 	query := `
 	INSERT INTO users (usersID, tenant_id, email, name, role, created_at)
 	VALUES ($1, $2, $3, $4, $5, $6)
@@ -42,7 +42,7 @@ func (r *PostgresUserRepository) Create(ctx context.Context, user *models.Users)
 	return err
 }
 
-func (r *PostgresUserRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Users, error) {
+func (r *PostgresUserRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.User, error) {
 	query := `
 	SELECT userID, tenantID, email, name, role, created_at
 	FROM users
@@ -51,7 +51,7 @@ func (r *PostgresUserRepository) GetByID(ctx context.Context, id uuid.UUID) (*mo
 
 	row := r.db.QueryRowContext(ctx, query, id)
 
-	var user models.Users
+	var user models.User
 	err := row.Scan(
 		&user.UserID,
 		&user.TenantID,
@@ -67,7 +67,7 @@ func (r *PostgresUserRepository) GetByID(ctx context.Context, id uuid.UUID) (*mo
 	return &user, nil
 }
 
-func (r *PostgresUserRepository) GetByEmail(ctx context.Context, email string) (*models.Users, error) {
+func (r *PostgresUserRepository) GetByEmail(ctx context.Context, email string) (*models.User, error) {
 	query := `
 	SELECT userID, tenantID, email, name, role, created_at
 	FROM users
@@ -76,7 +76,7 @@ func (r *PostgresUserRepository) GetByEmail(ctx context.Context, email string) (
 
 	row := r.db.QueryRowContext(ctx, query, email)
 
-	var user models.Users
+	var user models.User
 	err := row.Scan(
 		&user.UserID,
 		&user.TenantID,

@@ -13,7 +13,7 @@ const (
 	StoreTypePhyiscal StoreType = "physical"
 )
 
-type Stores struct {
+type Store struct {
 	StoreID     uuid.UUID `json:"store_id"`
 	TenantID    uuid.UUID `json:"tenant_id"`
 	Name        string    `json:"name"`

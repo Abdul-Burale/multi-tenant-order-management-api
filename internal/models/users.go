@@ -14,11 +14,11 @@ const (
 	RoleOwner UserRole = "OWNER"
 )
 
-type Users struct {
+type User struct {
 	UserID    uuid.UUID `json:"user_id"`
 	TenantID  uuid.UUID `json:"tenant_id"`
 	Email     string    `json:"email"`
 	Name      string    `json:"name"`
 	Role      UserRole  `json:"role"`
-	CreatedAt time.Time `json:"created_at`
+	CreatedAt time.Time `json:"created_at"`
 }

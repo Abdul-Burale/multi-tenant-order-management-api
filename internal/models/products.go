@@ -13,7 +13,7 @@ const (
 	ProductStatusOutOfStock ProductStatus = "out_of_stock"
 )
 
-type Products struct {
+type Product struct {
 	ProductID   uuid.UUID     `json:"product_id"`
 	StoreID     uuid.UUID     `json:"store_id"`
 	Name        string        `json:"name"`

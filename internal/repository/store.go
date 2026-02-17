@@ -9,8 +9,8 @@ import (
 )
 
 type StoreRepository interface {
-	Create(ctx context.Context, store *models.Stores) error
-	GetByID(ctx context.Context, id uuid.UUID) (*models.Stores, error)
+	Create(ctx context.Context, store *models.Store) error
+	GetByID(ctx context.Context, id uuid.UUID) (*models.Store, error)
 }
 
 type PostgresStoreRepository struct {
@@ -21,7 +21,7 @@ func NewPostgresStoreRepository(db *sql.DB) *PostgresStoreRepository {
 	return &PostgresStoreRepository{db: db}
 }
 
-func (r *PostgresStoreRepository) Create(ctx context.Context, store *models.Stores) error {
+func (r *PostgresStoreRepository) Create(ctx context.Context, store *models.Store) error {
 	query := `
 		INSERT INTO stores (storeID, tenant_id, name, description, type, created_at)
 		VALUES ($1, $2, $3, $4, $5, $6)
@@ -39,7 +39,7 @@ func (r *PostgresStoreRepository) Create(ctx context.Context, store *models.Stor
 	return err
 }
 
-func (r *PostgresStoreRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Stores, error) {
+func (r *PostgresStoreRepository) GetByID(ctx context.Context, id uuid.UUID) (*models.Store, error) {
 	query := `
 		SELECT storeID, tenant_id, name, description, type, created_at
 		FROM stores
@@ -48,7 +48,7 @@ func (r *PostgresStoreRepository) GetByID(ctx context.Context, id uuid.UUID) (*m
 
 	row := r.db.QueryRowContext(ctx, query, id)
 
-	var store models.Stores
+	var store models.Store
 	err := row.Scan(
 		&store.StoreID,
 		&store.TenantID,

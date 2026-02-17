@@ -1,3 +1,13 @@
+package repository
+
+import (
+	"context"
+	"database/sql"
+
+	"github.com/abdul-burale/multi-tenant-order-management-api/internal/models"
+	"github.com/google/uuid"
+)
+
 type ProductRepository interface {
 	Create(ctx context.Context, product *models.Product) error
 	GetByID(ctx context.Context, id uuid.UUID) (*models.Product, error)
@@ -23,7 +33,7 @@ func (r *PostgresProductRepository) Create(ctx context.Context, product *models.
 		product.Name,
 		product.Description,
 		product.Price,
-		product.Active,
+		product.Status,
 		product.CreatedAt,
 	)
 
@@ -46,7 +56,7 @@ func (r *PostgresProductRepository) GetByID(ctx context.Context, id uuid.UUID) (
 		&product.Name,
 		&product.Description,
 		&product.Price,
-		&product.Active,
+		&product.Status,
 		&product.CreatedAt,
 	)
 	if err != nil {

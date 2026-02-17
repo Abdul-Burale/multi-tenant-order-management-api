@@ -1,3 +1,13 @@
+package repository
+
+import (
+	"context"
+	"database/sql"
+
+	"github.com/abdul-burale/multi-tenant-order-management-api/internal/models"
+	"github.com/google/uuid"
+)
+
 type OrderRepository interface {
 	Create(ctx context.Context, order *models.Order) error
 	GetByID(ctx context.Context, id uuid.UUID) (*models.Order, error)
